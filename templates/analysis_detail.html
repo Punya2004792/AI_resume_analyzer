@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Previous Analysis | ResumeAI
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='CSS/style.css'
+          ) }}">
+
+</head>
+
+
+<body>
+
+
+<div class="app-container">
+
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                AI
+            </div>
+
+            <div>
+
+                <h2>ResumeAI</h2>
+
+                <p>Analyzer</p>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="nav-item"
+            >
+                🏠
+                <span>Dashboard</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('home') }}"
+                class="nav-item"
+            >
+                📊
+                <span>Analyze Resume</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('history') }}"
+                class="nav-item active"
+            >
+                ◷
+                <span>History</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <div class="ai-status">
+
+                <span class="status-dot"></span>
+
+                AI Engine Active
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Previous Analysis
+                </h1>
+
+                <p>
+                    Saved resume analysis
+                </p>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <a
+                    href="{{ url_for('history') }}"
+                    class="secondary-button"
+                >
+                    ← History
+                </a>
+
+
+                <a
+                    href="{{ url_for('home') }}"
+                    class="primary-button"
+                >
+                    + New Analysis
+                </a>
+
+            </div>
+
+        </header>
+
+
+
+        <section class="detail-resume-card">
+
+            <div class="detail-resume-icon">
+                PDF
+            </div>
+
+
+            <div>
+
+                <h2>
+                    {{ analysis["resume_name"] }}
+                </h2>
+
+                <p>
+                    Analyzed on
+                    {{ analysis["created_at"] }}
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <section class="score-grid">
+
+
+            <div class="score-card">
+
+                <div class="score-card-header">
+                    <span>Overall Match</span>
+                    <span>🎯</span>
+                </div>
+
+                <div class="score-value">
+                    {{ analysis["final_score"] }}%
+                </div>
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-fill overall-bar"
+                        data-score="{{ analysis['final_score'] }}"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="score-card">
+
+                <div class="score-card-header">
+                    <span>Skill Match</span>
+                    <span>🎯</span>
+                </div>
+
+                <div class="score-value">
+                    {{ analysis["skill_score"] }}%
+                </div>
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-fill skill-bar"
+                        data-score="{{ analysis['skill_score'] }}"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="score-card">
+
+                <div class="score-card-header">
+                    <span>Text Similarity</span>
+                    <span>🧠</span>
+                </div>
+
+                <div class="score-value">
+                    {{ analysis["similarity_score"] }}%
+                </div>
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-fill text-bar"
+                        data-score="{{ analysis['similarity_score'] }}"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="score-card">
+
+                <div class="score-card-header">
+                    <span>ATS Compatibility</span>
+                    <span>🤖</span>
+                </div>
+
+                <div class="score-value">
+                    {{ analysis["ats_score"] }}%
+                </div>
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-fill ats-bar"
+                        data-score="{{ analysis['ats_score'] }}"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <section class="keyword-section">
+
+            <div class="keyword-header">
+
+                <div>
+
+                    <span class="section-label">
+                        NLP ANALYSIS
+                    </span>
+
+                    <h2>
+                        🔑 Keyword Intelligence
+                    </h2>
+
+                </div>
+
+
+                <div class="keyword-score">
+
+                    <small>
+                        Keyword Coverage
+                    </small>
+
+                    <strong>
+                        {{ analysis["keyword_coverage"] }}%
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="keyword-columns">
+
+
+                <div class="keyword-card matched-card">
+
+                    <div class="keyword-card-title">
+
+                        <span>
+                            ✓ Matched Keywords
+                        </span>
+
+                        <strong>
+                            {{ matched_keywords|length }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="tag-container">
+
+                        {% for keyword in matched_keywords %}
+
+                            <span class="keyword-tag matched">
+                                ✓ {{ keyword|title }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="keyword-card missing-card">
+
+                    <div class="keyword-card-title">
+
+                        <span>
+                            ⚠ Missing Keywords
+                        </span>
+
+                        <strong>
+                            {{ missing_keywords|length }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="tag-container">
+
+                        {% for keyword in missing_keywords %}
+
+                            <span class="keyword-tag missing">
+                                + {{ keyword|title }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <section class="skills-section">
+
+
+            <div class="section-heading">
+
+                <h2>
+                    ✓ Matched Skills
+                </h2>
+
+            </div>
+
+
+            <div class="skill-tags">
+
+                {% for skill in matched_skills %}
+
+                    <span class="skill-tag matched">
+                        ✓ {{ skill }}
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+
+
+            <div class="section-heading">
+
+                <h2>
+                    ⚠ Missing Skills
+                </h2>
+
+            </div>
+
+
+            <div class="skill-tags">
+
+                {% for skill in missing_skills %}
+
+                    <span class="skill-tag missing">
+                        + {{ skill }}
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+
+        </section>
+
+
+
+        <section class="detail-actions">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="primary-button"
+            >
+                Analyze Another Resume
+            </a>
+
+
+            <a
+                href="{{ url_for('history') }}"
+                class="secondary-button"
+            >
+                View All History
+            </a>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<script src="{{ url_for(
+    'static',
+    filename='script.js'
+) }}"></script>
+
+</body>
+
+</html>

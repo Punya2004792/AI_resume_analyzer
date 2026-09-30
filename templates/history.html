@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Analysis History | ResumeAI
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='CSS/style.css'
+          ) }}">
+
+</head>
+
+
+<body>
+
+
+<div class="app-container">
+
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                AI
+            </div>
+
+            <div>
+
+                <h2>ResumeAI</h2>
+
+                <p>Analyzer</p>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="nav-item"
+            >
+                🏠
+                <span>Dashboard</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('home') }}"
+                class="nav-item"
+            >
+                📊
+                <span>Analyze Resume</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('history') }}"
+                class="nav-item active"
+            >
+                ◷
+                <span>History</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <div class="ai-status">
+
+                <span class="status-dot"></span>
+
+                AI Engine Active
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Analysis History
+                </h1>
+
+                <p>
+                    Review your previous resume analyses
+                </p>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('home') }}"
+                class="primary-button"
+            >
+                + New Analysis
+            </a>
+
+        </header>
+
+
+
+        {% if analyses %}
+
+
+        <section class="history-stats">
+
+
+            <div class="history-stat-card">
+
+                <span>
+                    Total Analyses
+                </span>
+
+                <strong>
+                    {{ analyses|length }}
+                </strong>
+
+            </div>
+
+
+            <div class="history-stat-card">
+
+                <span>
+                    Latest Score
+                </span>
+
+                <strong>
+                    {{ analyses[0]["final_score"] }}%
+                </strong>
+
+            </div>
+
+
+            <div class="history-stat-card">
+
+                <span>
+                    Latest ATS
+                </span>
+
+                <strong>
+                    {{ analyses[0]["ats_score"] }}%
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <section class="history-table-wrapper">
+
+
+            <table class="history-table">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Resume</th>
+
+                        <th>Overall</th>
+
+                        <th>Skills</th>
+
+                        <th>Similarity</th>
+
+                        <th>ATS</th>
+
+                        <th>Date</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                {% for analysis in analyses %}
+
+                    <tr>
+
+                        <td>
+                            {{ loop.index }}
+                        </td>
+
+
+                        <td>
+
+                            <div class="resume-name-cell">
+
+                                <div class="resume-icon">
+                                    PDF
+                                </div>
+
+                                {{ analysis["resume_name"] }}
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="score-badge">
+
+                                {{ analysis["final_score"] }}%
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+                            {{ analysis["skill_score"] }}%
+                        </td>
+
+
+                        <td>
+                            {{ analysis["similarity_score"] }}%
+                        </td>
+
+
+                        <td>
+                            {{ analysis["ats_score"] }}%
+                        </td>
+
+
+                        <td>
+                            {{ analysis["created_at"] }}
+                        </td>
+
+
+                        <td>
+
+                            <a
+                                href="{{ url_for(
+                                    'view_analysis',
+                                    analysis_id=analysis['id']
+                                ) }}"
+                                class="view-button"
+                            >
+                                View Analysis
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+
+        </section>
+
+
+        {% else %}
+
+
+        <section class="empty-history">
+
+            <div class="empty-history-icon">
+                ◷
+            </div>
+
+            <h2>
+                No analyses yet
+            </h2>
+
+            <p>
+                Analyze your first resume to create
+                your analysis history.
+            </p>
+
+            <a
+                href="{{ url_for('home') }}"
+                class="primary-button"
+            >
+                Analyze Resume
+            </a>
+
+        </section>
+
+
+        {% endif %}
+
+
+    </main>
+
+</div>
+
+
+</body>
+
+</html>

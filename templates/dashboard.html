@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Resume Analysis | ResumeAI
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='CSS/style.css'
+          ) }}">
+
+</head>
+
+
+<body>
+
+
+<div class="app-container">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                AI
+            </div>
+
+            <div>
+
+                <h2>ResumeAI</h2>
+
+                <p>Analyzer</p>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="{{ url_for('home') }}"
+               class="nav-item">
+
+                🏠
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="{{ url_for('home') }}"
+               class="nav-item active">
+
+                📊
+                <span>Analyze Resume</span>
+
+            </a>
+
+
+            <a href="{{ url_for('history') }}"
+               class="nav-item">
+
+                ◷
+                <span>History</span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <div class="ai-status">
+
+                <span class="status-dot"></span>
+
+                AI Engine Active
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Resume Analysis
+                </h1>
+
+                <p>
+                    AI-powered analysis of your resume
+                </p>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <a
+                    href="{{ url_for('home') }}"
+                    class="secondary-button"
+                >
+                    + New Analysis
+                </a>
+
+
+                <a
+                    href="{{ url_for('history') }}"
+                    class="primary-button"
+                >
+                    History
+                </a>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- RESUME HEADER -->
+
+        <section class="result-header">
+
+            <div class="result-file-icon">
+                📄
+            </div>
+
+
+            <div>
+
+                <h2>
+                    Resume - {{ resume_name }}
+                </h2>
+
+                <p>
+                    Analysis completed successfully
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- SCORE CARDS -->
+
+        <section class="score-grid">
+
+
+            <div class="score-card">
+
+                <div class="score-card-header">
+
+                    <span>
+                        Overall Match
+                    </span>
+
+                    <span>
+                        🎯
+                    </span>
+
+                </div>
+
+                <div class="score-value">
+
+                    {{ final_score }}%
+
+                </div>
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-fill overall-bar"
+                        data-score="{{ final_score }}"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="score-card">
+
+                <div class="score-card-header">
+
+                    <span>
+                        Skill Match
+                    </span>
+
+                    <span>
+                        🎯
+                    </span>
+
+                </div>
+
+                <div class="score-value">
+
+                    {{ skill_score }}%
+
+                </div>
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-fill skill-bar"
+                        data-score="{{ skill_score }}"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="score-card">
+
+                <div class="score-card-header">
+
+                    <span>
+                        Text Similarity
+                    </span>
+
+                    <span>
+                        🧠
+                    </span>
+
+                </div>
+
+                <div class="score-value">
+
+                    {{ similarity_score }}%
+
+                </div>
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-fill text-bar"
+                        data-score="{{ similarity_score }}"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="score-card">
+
+                <div class="score-card-header">
+
+                    <span>
+                        ATS Compatibility
+                    </span>
+
+                    <span>
+                        🤖
+                    </span>
+
+                </div>
+
+                <div class="score-value">
+
+                    {{ ats_score }}%
+
+                </div>
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-fill ats-bar"
+                        data-score="{{ ats_score }}"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- MATCH STATUS -->
+
+        <section class="match-status">
+
+            {% if final_score >= 75 %}
+
+                <div class="status-box status-good">
+
+                    <strong>
+                        Strong Match
+                    </strong>
+
+                    <span>
+                        Your resume has substantial alignment
+                        with the selected job description.
+                    </span>
+
+                </div>
+
+            {% elif final_score >= 50 %}
+
+                <div class="status-box status-medium">
+
+                    <strong>
+                        Moderate Match
+                    </strong>
+
+                    <span>
+                        Your resume has relevant content,
+                        with room for improvement.
+                    </span>
+
+                </div>
+
+            {% else %}
+
+                <div class="status-box status-low">
+
+                    <strong>
+                        Low Match
+                    </strong>
+
+                    <span>
+                        Consider tailoring your resume
+                        more closely to the job description.
+                    </span>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- ANALYSIS OVERVIEW -->
+
+        <section class="analytics-section">
+
+            <div class="section-heading">
+
+                <span class="section-label">
+                    RESUME INTELLIGENCE
+                </span>
+
+                <h2>
+                    Analysis Overview
+                </h2>
+
+                <p>
+                    A visual breakdown of how your resume
+                    matches the selected job description.
+                </p>
+
+            </div>
+
+
+
+            <div class="analytics-grid">
+
+
+                <!-- SCORE BREAKDOWN -->
+
+                <div class="analytics-card">
+
+                    <div class="analytics-card-header">
+
+                        <div>
+
+                            <h3>
+                                Score Breakdown
+                            </h3>
+
+                            <p>
+                                Performance across
+                                analysis metrics
+                            </p>
+
+                        </div>
+
+                        <span class="analytics-icon">
+                            📊
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="metric-list">
+
+
+                        <div class="metric-row">
+
+                            <div class="metric-label">
+
+                                <span>
+                                    Overall Match
+                                </span>
+
+                                <strong>
+                                    {{ final_score }}%
+                                </strong>
+
+                            </div>
+
+                            <div class="metric-track">
+
+                                <div
+                                    class="metric-bar overall-bar"
+                                    data-value="{{ final_score }}"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="metric-row">
+
+                            <div class="metric-label">
+
+                                <span>
+                                    Skill Match
+                                </span>
+
+                                <strong>
+                                    {{ skill_score }}%
+                                </strong>
+
+                            </div>
+
+                            <div class="metric-track">
+
+                                <div
+                                    class="metric-bar skill-bar"
+                                    data-value="{{ skill_score }}"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="metric-row">
+
+                            <div class="metric-label">
+
+                                <span>
+                                    Text Relevance
+                                </span>
+
+                                <strong>
+                                    {{ similarity_score }}%
+                                </strong>
+
+                            </div>
+
+                            <div class="metric-track">
+
+                                <div
+                                    class="metric-bar text-bar"
+                                    data-value="{{ similarity_score }}"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="metric-row">
+
+                            <div class="metric-label">
+
+                                <span>
+                                    Keyword Coverage
+                                </span>
+
+                                <strong>
+                                    {{ keyword_coverage }}%
+                                </strong>
+
+                            </div>
+
+                            <div class="metric-track">
+
+                                <div
+                                    class="metric-bar keyword-bar"
+                                    data-value="{{ keyword_coverage }}"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="metric-row">
+
+                            <div class="metric-label">
+
+                                <span>
+                                    ATS Compatibility
+                                </span>
+
+                                <strong>
+                                    {{ ats_score }}%
+                                </strong>
+
+                            </div>
+
+                            <div class="metric-track">
+
+                                <div
+                                    class="metric-bar ats-bar"
+                                    data-value="{{ ats_score }}"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SUMMARY -->
+
+                <div class="analytics-card">
+
+                    <div class="analytics-card-header">
+
+                        <div>
+
+                            <h3>
+                                🧠 Analysis Summary
+                            </h3>
+
+                            <p>
+                                Automatic interpretation
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="summary-box">
+
+                        <strong>
+
+                            {% if final_score >= 75 %}
+                                Strong Job Match
+                            {% elif final_score >= 50 %}
+                                Moderate Job Match
+                            {% else %}
+                                Low Job Match
+                            {% endif %}
+
+                        </strong>
+
+
+                        <p>
+
+                            {% if final_score >= 75 %}
+
+                                Your resume contains substantial
+                                relevant content for this job.
+
+                            {% elif final_score >= 50 %}
+
+                                Your resume has relevant content,
+                                with room for improvement.
+
+                            {% else %}
+
+                                Your resume could be tailored
+                                more closely to this job.
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="mini-insights">
+
+
+                        <div class="mini-card">
+
+                            <span>
+                                🎯
+                            </span>
+
+                            <strong>
+                                {{ matched_skills|length }}
+                            </strong>
+
+                            <small>
+                                skills matched
+                            </small>
+
+                        </div>
+
+
+                        <div class="mini-card">
+
+                            <span>
+                                ⚠️
+                            </span>
+
+                            <strong>
+                                {{ missing_skills|length }}
+                            </strong>
+
+                            <small>
+                                skills missing
+                            </small>
+
+                        </div>
+
+
+                        <div class="mini-card">
+
+                            <span>
+                                🔑
+                            </span>
+
+                            <strong>
+                                {{ keyword_coverage }}%
+                            </strong>
+
+                            <small>
+                                keyword coverage
+                            </small>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- EXPLANATIONS -->
+
+            <div class="explanation-grid">
+
+
+                <div class="explanation-card">
+
+                    <span>
+                        🎯
+                    </span>
+
+                    <div>
+
+                        <h4>
+                            Skill Match
+                        </h4>
+
+                        <p>
+                            Compares relevant skills detected
+                            in your resume with the job description.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="explanation-card">
+
+                    <span>
+                        🧠
+                    </span>
+
+                    <div>
+
+                        <h4>
+                            Text Relevance
+                        </h4>
+
+                        <p>
+                            Uses TF-IDF and cosine similarity
+                            to compare resume and job-description text.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="explanation-card">
+
+                    <span>
+                        🔑
+                    </span>
+
+                    <div>
+
+                        <h4>
+                            Keyword Coverage
+                        </h4>
+
+                        <p>
+                            Measures how many important
+                            job-related keywords are present
+                            in the resume.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- KEYWORD INTELLIGENCE -->
+
+        <section class="keyword-section">
+
+            <div class="keyword-header">
+
+                <div>
+
+                    <span class="section-label">
+                        NLP ANALYSIS
+                    </span>
+
+                    <h2>
+                        🔑 Keyword Intelligence
+                    </h2>
+
+                    <p>
+                        Important keywords detected from
+                        the job description and resume.
+                    </p>
+
+                </div>
+
+
+                <div class="keyword-score">
+
+                    <small>
+                        Keyword Coverage
+                    </small>
+
+                    <strong>
+                        {{ keyword_coverage }}%
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="keyword-progress">
+
+                <div
+                    class="keyword-progress-fill"
+                    data-value="{{ keyword_coverage }}"
+                ></div>
+
+            </div>
+
+
+
+            <div class="keyword-columns">
+
+
+                <div class="keyword-card matched-card">
+
+                    <div class="keyword-card-title">
+
+                        <span>
+                            ✓ Matched Keywords
+                        </span>
+
+                        <strong>
+                            {{ matched_keywords|length }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="tag-container">
+
+                        {% for keyword in matched_keywords %}
+
+                            <span class="keyword-tag matched">
+                                ✓ {{ keyword|title }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="keyword-card missing-card">
+
+                    <div class="keyword-card-title">
+
+                        <span>
+                            ⚠ Missing Keywords
+                        </span>
+
+                        <strong>
+                            {{ missing_keywords|length }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="tag-container">
+
+                        {% for keyword in missing_keywords %}
+
+                            <span class="keyword-tag missing">
+                                + {{ keyword|title }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- SKILLS -->
+
+        <section class="skills-section">
+
+
+            <div class="section-heading">
+
+                <h2>
+                    ✓ Matched Skills
+                </h2>
+
+            </div>
+
+
+            <div class="skill-tags">
+
+                {% for skill in matched_skills %}
+
+                    <span class="skill-tag matched">
+                        ✓ {{ skill }}
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+
+
+            <div class="section-heading">
+
+                <h2>
+                    ⚠ Missing Skills
+                </h2>
+
+            </div>
+
+
+            <div class="skill-tags">
+
+                {% for skill in missing_skills %}
+
+                    <span class="skill-tag missing">
+                        + {{ skill }}
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- AI INSIGHTS -->
+
+        <section class="insights-section">
+
+
+            <div class="section-heading">
+
+                <span class="section-label">
+                    AI RECOMMENDATIONS
+                </span>
+
+                <h2>
+                    ✨ AI Insights
+                </h2>
+
+                <p>
+                    Automated recommendations based
+                    on your analysis.
+                </p>
+
+            </div>
+
+
+
+            <div class="insight-list">
+
+                {% for recommendation in recommendations %}
+
+                    <div class="insight-item">
+
+                        <span>
+                            ✦
+                        </span>
+
+                        <p>
+                            {{ recommendation }}
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ATS -->
+
+        <section class="ats-section">
+
+
+            <div class="section-heading">
+
+                <h2>
+                    ATS Structure
+                </h2>
+
+                <p>
+                    Resume sections detected by the analyzer.
+                </p>
+
+            </div>
+
+
+
+            <div class="ats-grid">
+
+
+                {% for section in ats_detected %}
+
+                    <div class="ats-item detected">
+
+                        <span>
+                            ✓
+                        </span>
+
+                        {{ section }}
+
+                    </div>
+
+                {% endfor %}
+
+
+
+                {% for section in ats_missing %}
+
+                    <div class="ats-item missing">
+
+                        <span>
+                            !
+                        </span>
+
+                        {{ section }}
+
+                    </div>
+
+                {% endfor %}
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ACTIONS -->
+
+        <section class="detail-actions">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="primary-button"
+            >
+                Analyze Another Resume
+            </a>
+
+
+            <a
+                href="{{ url_for('history') }}"
+                class="secondary-button"
+            >
+                View Analysis History
+            </a>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<script src="{{ url_for(
+    'static',
+    filename='script.js'
+) }}"></script>
+
+</body>
+
+</html>

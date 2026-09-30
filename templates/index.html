@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ResumeAI | AI Resume Analyzer</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='CSS/style.css'
+          ) }}">
+
+</head>
+
+
+<body>
+
+
+<div class="app-container">
+
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                AI
+            </div>
+
+            <div>
+
+                <h2>ResumeAI</h2>
+
+                <p>Analyzer</p>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="{{ url_for('home') }}"
+               class="nav-item active">
+
+                🏠
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="{{ url_for('home') }}"
+               class="nav-item">
+
+                📊
+                <span>Analyze Resume</span>
+
+            </a>
+
+
+            <a href="{{ url_for('history') }}"
+               class="nav-item">
+
+                ◷
+                <span>History</span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <div class="ai-status">
+
+                <span class="status-dot"></span>
+
+                AI Engine Active
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>AI Resume Analyzer</h1>
+
+                <p>
+                    Smart career intelligence
+                </p>
+
+            </div>
+
+
+            <a href="#analysis-form"
+               class="primary-button">
+
+                + New Analysis
+
+            </a>
+
+        </header>
+
+
+
+        <section class="hero-section">
+
+            <div>
+
+                <span class="section-label">
+                    AI-POWERED RESUME ANALYSIS
+                </span>
+
+                <h1>
+                    Analyze your resume
+                    against any job description.
+                </h1>
+
+                <p>
+                    Discover skill matches, keyword coverage,
+                    text relevance and ATS compatibility.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <section
+            id="analysis-form"
+            class="upload-card"
+        >
+
+            <div class="section-heading">
+
+                <h2>
+                    Start Resume Analysis
+                </h2>
+
+                <p>
+                    Upload your resume and paste the
+                    target job description.
+                </p>
+
+            </div>
+
+
+            <form
+                action="{{ url_for('analyze') }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Resume PDF
+                        </label>
+
+
+                        <label class="file-upload">
+
+                            <input
+                                type="file"
+                                name="resume"
+                                id="resume"
+                                accept=".pdf"
+                                required
+                            >
+
+                            <span class="upload-icon">
+                                📄
+                            </span>
+
+                            <strong>
+                                Choose PDF Resume
+                            </strong>
+
+                            <small id="file-name">
+                                PDF files only
+                            </small>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Job Description
+                        </label>
+
+                        <textarea
+                            name="job_description"
+                            placeholder="Paste the job description here..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-button analyze-button"
+                >
+
+                    Analyze Resume
+
+                </button>
+
+
+            </form>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<script src="{{ url_for(
+    'static',
+    filename='script.js'
+) }}"></script>
+
+</body>
+
+</html>
